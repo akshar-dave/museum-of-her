@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLongPress } from "use-long-press";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function Share() {
   const [value, setValue] = useState("");
@@ -99,13 +100,13 @@ export default function Share() {
             onSubmit={(e) => e.preventDefault()}
           >
             <div className="flex gap-2 w-full items-start">
-              <textarea
+              <TextareaAutosize
                 ref={textareaRef}
                 value={value}
                 inputMode="text"
                 spellCheck="false"
                 onChange={handleChange}
-                className={`focus-visible:placeholder:text-transparent placeholder:transition-all placeholder:duration-300 placeholder:ease-out min-h-full border-none w-full field-sizing-content px-6 py-4 rounded-lg outline-none resize-none pb-12 transition-all duration-750 ease-out ${
+                className={`focus-visible:placeholder:text-transparent placeholder:transition-all placeholder:duration-300 placeholder:ease-out min-h-full border-none w-full px-6 py-4 rounded-lg outline-none resize-none pb-12 transition-[background] duration-750 ease-out ${
                   pressed || isSubmitting ? "bg-transparent" : "bg-white"
                 }`}
                 type="text"

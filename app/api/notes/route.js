@@ -10,7 +10,7 @@ const supabase = createClient(
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from('notes')
+      .from('notes_view')
       .select('*')
       .order('created_at', { ascending: false });
 

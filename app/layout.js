@@ -8,10 +8,15 @@ export const metadata = {
   description: "The Museum of Her",
 };
 
+import Header from "../components/Header";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        <main className="pt-4">{children}</main>
+      </body>
     </html>
   );
 }

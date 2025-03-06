@@ -6,7 +6,8 @@ import { useLongPress } from "use-long-press";
 import TextareaAutosize from "react-textarea-autosize";
 
 export default function Share() {
-  const [value, setValue] = useState("");
+  const [name, setName] = useState("");
+  const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedMessage, setSubmittedMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -16,30 +17,35 @@ export default function Share() {
   useEffect(() => {
     const storedNote = localStorage.getItem("myNote");
     if (storedNote) {
-      setValue(storedNote);
+      const parsedNote = JSON.parse(storedNote);
+      setName(parsedNote.name || "");
+      setNote(parsedNote.note || "");
     }
   }, []);
 
   useEffect(() => {
     if (!isSubmitted) {
       let watch;
-      if (value) {
+      if (note) {
         watch = setTimeout(() => {
-          localStorage.setItem("myNote", value);
+          localStorage.setItem(
+            "myNote",
+            JSON.stringify({ name: name, note: note })
+          );
         }, 200);
       } else {
         localStorage.removeItem("myNote");
       }
       return () => clearTimeout(watch);
     }
-  }, [value, isSubmitted]);
+  }, [note, isSubmitted, name]);
 
   const handleChange = (e) => {
-    setValue(e.target.value);
+    setNote(e.target.value);
   };
 
   const handleSubmit = async () => {
-    if (!value.trim()) {
+    if (!note.trim()) {
       textareaRef.current?.focus();
       setIsSubmitting(false);
       setPressed(false);
@@ -53,7 +59,7 @@ export default function Share() {
       const response = await fetch("/api/share", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ note: value.trim() }),
+        body: JSON.stringify({ name: name.trim(), note: note.trim() }),
       });
       if (response.ok) {
         setIsSubmitted(true);
@@ -102,10 +108,11 @@ export default function Share() {
             <div className="flex gap-2 w-full items-start">
               <TextareaAutosize
                 ref={textareaRef}
-                value={value}
+                minRows={8}
+                value={note}
                 inputMode="text"
                 spellCheck="false"
-                onChange={handleChange}
+                onChange={(e) => setNote(e.target.value)}
                 className={`focus-visible:placeholder:text-transparent placeholder:transition-all placeholder:duration-300 placeholder:ease-out min-h-full border-none w-full px-6 py-4 rounded-lg outline-none resize-none pb-12 transition-[background] duration-750 ease-out ${
                   pressed || isSubmitting ? "bg-transparent" : "bg-white"
                 }`}
@@ -115,6 +122,28 @@ export default function Share() {
                 disabled={isSubmitting}
               />
             </div>
+            <div className="relative overflow-hidden group flex flex-col gap-2 w-full items-start">
+              <input
+                value={name}
+                inputMode="text"
+                spellCheck="false"
+                onChange={(e) => setName(e.target.value)}
+                className={`min-h-full border-none w-full px-6 py-4 rounded-lg outline-none resize-none transition-all duration-500 ease-out ${
+                  pressed || isSubmitting ? "bg-transparent" : "bg-white"
+                }`}
+                maxLength={14}
+                type="text"
+                name="name"
+                placeholder="Your name / Pseudonym"
+                disabled={isSubmitting}
+              />
+              <p className={`text-black/50 pointer-events-none select-none`}>
+                Feel free to share it with your name, your name&apos;s initials
+                or leave it blank. We&apos;ll auto-assign a random initial if
+                left blank.
+              </p>
+            </div>
+
             <div className="flex items-center gap-4">
               <button
                 type="button"

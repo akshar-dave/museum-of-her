@@ -11,9 +11,9 @@ export async function POST(req) {
   const delay = new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
-    const { note } = await req.json();
+    const { name, note } = await req.json();
 
-    const insertPromise = supabase.from("notes").insert([{ note }]);
+    const insertPromise = supabase.from("notes").insert([{ name, note }]);
 
     const [insertResult] = await Promise.allSettled([insertPromise, delay]);
 

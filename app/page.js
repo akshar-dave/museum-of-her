@@ -33,9 +33,20 @@ export default function Home() {
         Share your story
       </Link>
       <div>
-        <ul>
+        <ul className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 items-start">
           {notes.map((note) => (
-            <li key={note.id}>{note.note}</li>
+            <motion.li
+              key={note.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-white flex flex-col px-6 py-4 pb-6 rounded-xl gap-6"
+            >
+              <p>{note.note}</p>
+              <p className="text-black/50">
+                <span>— </span>
+                {note.name ?? "Anonymous"}
+              </p>
+            </motion.li>
           ))}
         </ul>
       </div>

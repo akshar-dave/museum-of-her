@@ -17,9 +17,14 @@ export default function Share() {
   useEffect(() => {
     const storedNote = localStorage.getItem("myNote");
     if (storedNote) {
-      const parsedNote = JSON.parse(storedNote);
-      setName(parsedNote.name || "");
-      setNote(parsedNote.note || "");
+      try {
+        const parsedNote = JSON.parse(storedNote);
+        setName(parsedNote.name || "");
+        setNote(parsedNote.note || "");
+      } catch (error) {
+        console.error("Error parsing stored note:", error);
+        localStorage.removeItem("myNote");
+      }
     }
   }, []);
 

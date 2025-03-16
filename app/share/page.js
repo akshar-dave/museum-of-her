@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import ShareForm from "@/components/ShareForm";
 
 export default async function Share() {

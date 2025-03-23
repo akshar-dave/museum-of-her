@@ -25,7 +25,6 @@ export async function POST(req) {
     );
 
     const verificationResult = await verificationResponse.json();
-    console.log(verificationResult);
 
     if (!verificationResult.success) {
       return new Response(

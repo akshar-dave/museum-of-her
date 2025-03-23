@@ -1,6 +1,6 @@
 export const runtime = "edge";
 
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/app/lib/supabaseClient";
 
 export async function POST(req) {
   try {

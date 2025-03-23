@@ -266,7 +266,7 @@ const ShareForm = ({ categories = [] }) => {
           className="cf-turnstile"
           data-sitekey="0x4AAAAAAA89GzESq3w9jvRi"
           data-size="flexible"
-          // data-appearance="interaction-only"
+          data-appearance="interaction-only"
         ></div>
       </motion.div>
     </>

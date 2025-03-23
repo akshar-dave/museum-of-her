@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const runtime = "edge";
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -13,30 +13,33 @@ export async function POST(req) {
 
     // Verify Turnstile token
     const formData = new FormData();
-    formData.append('secret', process.env.TURNSTILE_SECRET_KEY);
-    formData.append('response', turnstileToken);
+    formData.append("secret", process.env.TURNSTILE_SECRET_KEY);
+    formData.append("response", turnstileToken);
 
     const verificationResponse = await fetch(
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
-        method: 'POST',
+        method: "POST",
         body: formData,
       }
     );
 
     const verificationResult = await verificationResponse.json();
+    console.log(verificationResult);
 
     if (!verificationResult.success) {
       return new Response(
-        JSON.stringify({ error: 'Turnstile verification failed' }),
+        JSON.stringify({ error: "Turnstile verification failed" }),
         {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         }
       );
     }
 
-    const { data, error } = await supabase.from("notes").insert([{ name, note, categories }]);
+    const { data, error } = await supabase
+      .from("notes")
+      .insert([{ name, note, categories }]);
 
     if (error) {
       console.error(error);

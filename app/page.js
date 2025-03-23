@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import categories from "@/components/categories";
 import { registerMasonry } from 'masonry-pf';
+import { supabase } from "@/app/lib/supabaseClient";
 
 
 const formatName = (name) => {
@@ -17,12 +18,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      try {
-        const response = await fetch("/api/notes");
-        const data = await response.json();
-        setNotes(data.notes);
-      } catch (error) {
+      const { data, error } = await supabase
+        .from("notes_view")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
         console.error("Failed to fetch notes:", error);
+      } else {
+        setNotes(data);
       }
     };
 

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLongPress } from "use-long-press";
 import TextareaAutosize from "react-textarea-autosize";
+import { useRouter } from "next/navigation";
 import Script from "next/script";
 
 const ShareForm = ({ categories = [] }) => {
@@ -15,6 +16,37 @@ const ShareForm = ({ categories = [] }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [pressed, setPressed] = useState(false);
   const textareaRef = useRef(null);
+  const router = useRouter();
+  const turnstileRef = useRef(null);
+
+  useEffect(() => {
+    const initializeTurnstile = () => {
+      if (window.turnstile) {
+        window.turnstile.render(".cf-turnstile", {
+          sitekey: "0x4AAAAAAA89GzESq3w9jvRi",
+        });
+      }
+    };
+
+    const cleanupTurnstile = () => {
+      if (window.turnstile) {
+        window.turnstile.reset(turnstileRef.current);
+      }
+    };
+
+    initializeTurnstile();
+
+    const handleRouteChange = () => {
+      cleanupTurnstile();
+      initializeTurnstile();
+    };
+
+    router.events?.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events?.off("routeChangeComplete", handleRouteChange);
+      cleanupTurnstile();
+    };
+  }, [router]);
 
   useEffect(() => {
     const storedNote = localStorage.getItem("myNote");
@@ -173,9 +205,11 @@ const ShareForm = ({ categories = [] }) => {
                 left blank.
               </p>
 
-              <div className={`mt-2 flex flex-col gap-2 w-full items-start px-6 py-4 rounded-lg ${
+              <div
+                className={`mt-2 flex flex-col gap-2 w-full items-start px-6 py-4 rounded-lg ${
                   pressed || isSubmitting ? "bg-transparent" : "bg-white"
-                } transition-[background] duration-1000 ease-out`}>
+                } transition-[background] duration-1000 ease-out`}
+              >
                 <p>
                   Type of incident{" "}
                   <span className="opacity-40">(optional)</span>
@@ -191,7 +225,9 @@ const ShareForm = ({ categories = [] }) => {
                           type="checkbox"
                           value={category.id}
                           className="sr-only peer"
-                          defaultChecked={selectedCategories.includes(category.id)}
+                          defaultChecked={selectedCategories.includes(
+                            category.id
+                          )}
                           onChange={(e) => {
                             if (e.target.checked) {
                               setSelectedCategories([
@@ -207,7 +243,13 @@ const ShareForm = ({ categories = [] }) => {
                             }
                           }}
                         />
-                        <span className={`h-3 w-3 ${selectedCategories.includes(category.id) ? 'bg-blue-500' : ''} flex rounded-full border border-blue-200`} />
+                        <span
+                          className={`h-3 w-3 ${
+                            selectedCategories.includes(category.id)
+                              ? "bg-blue-500"
+                              : ""
+                          } flex rounded-full border border-blue-200`}
+                        />
                         <span
                           className={`${
                             selectedCategories.includes(category.id)
@@ -267,6 +309,7 @@ const ShareForm = ({ categories = [] }) => {
           data-sitekey="0x4AAAAAAA89GzESq3w9jvRi"
           data-size="flexible"
           data-appearance="interaction-only"
+          ref={turnstileRef}
         ></div>
       </motion.div>
     </>

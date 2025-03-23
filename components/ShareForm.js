@@ -16,6 +16,10 @@ const ShareForm = ({ categories = [] }) => {
   const [pressed, setPressed] = useState(false);
   const textareaRef = useRef(null);
 
+  useEffect(()=> {
+    console.log(selectedCategories)
+  }, [selectedCategories])
+
   useEffect(() => {
     const storedNote = localStorage.getItem("myNote");
     if (storedNote) {
@@ -70,7 +74,7 @@ const ShareForm = ({ categories = [] }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name.trim(),
+          name: name,
           note: note.trim(),
           turnstileToken: token,
           categories: selectedCategories,

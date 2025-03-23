@@ -3,6 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import categories from "@/components/categories";
+import { registerMasonry } from 'masonry-pf';
+
+
+const formatName = (name) => {
+  const trimmedName = (name ?? "").trim().replace(/^[\u2013\u2014-]*/, "");
+  return trimmedName === "" ? "Anonymous" : trimmedName;
+};
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -33,21 +41,41 @@ export default function Home() {
         Share your story
       </Link>
       <div>
-        <ul className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 items-start">
-          {notes.map((note) => (
-            <motion.li
-              key={note.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="bg-white flex flex-col px-6 py-4 pb-6 rounded-xl gap-6"
-            >
-              <p>{note.note}</p>
-              <p className="text-black/50">
-                <span>— </span>
-                {note.name ?? "Anonymous"}
-              </p>
-            </motion.li>
-          ))}
+        <ul className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 grid-rows-[masonry] gap-4 items-start"
+        ref={registerMasonry}
+        >
+          {notes.map((note) => {
+            const noteCategories = categories.filter((category) =>
+              note.categories?.includes(category.id)
+            );
+
+            return (
+              <motion.li
+                key={note.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="bg-white flex flex-col px-6 py-4 pb-6 rounded-xl gap-6"
+              >
+                <p>{note.note}</p>
+                <p className="text-black/50">
+                  <span>— </span>
+                  {formatName(note.name)}
+                </p>
+                {noteCategories.length > 0 && (
+                  <p className="text-gray-500 text-sm font-medium">
+                    {noteCategories
+                      .map((category, index) => (
+                        <span key={category.id}>
+                          <a href="#">{category.name}</a>
+                          {index < noteCategories.length - 1 ? ", " : ""}
+                        </span>
+                      ))
+                      .reduce((prev, curr) => [prev, curr])}
+                  </p>
+                )}
+              </motion.li>
+            );
+          })}
         </ul>
       </div>
     </motion.div>

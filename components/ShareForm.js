@@ -16,10 +16,6 @@ const ShareForm = ({ categories = [] }) => {
   const [pressed, setPressed] = useState(false);
   const textareaRef = useRef(null);
 
-  useEffect(()=> {
-    console.log(selectedCategories)
-  }, [selectedCategories])
-
   useEffect(() => {
     const storedNote = localStorage.getItem("myNote");
     if (storedNote) {

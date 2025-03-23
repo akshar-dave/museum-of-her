@@ -8,8 +8,6 @@ const supabase = createClient(
 );
 
 export async function POST(req) {
-  const delay = new Promise((resolve) => setTimeout(resolve, 2000));
-
   try {
     const { name, note, turnstileToken, categories } = await req.json();
 
@@ -38,12 +36,10 @@ export async function POST(req) {
       );
     }
 
-    const insertPromise = supabase.from("notes").insert([{ name, note, categories }]);
+    const { data, error } = await supabase.from("notes").insert([{ name, note, categories }]);
 
-    const [insertResult] = await Promise.allSettled([insertPromise, delay]);
-
-    if (insertResult.status === "rejected") {
-      console.error(insertResult.reason);
+    if (error) {
+      console.error(error);
       return new Response(
         JSON.stringify({ error: "Could not share the note" }),
         {

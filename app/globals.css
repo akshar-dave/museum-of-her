@@ -10,8 +10,6 @@
   html,
   body {
     @apply subpixel-antialiased;
-    @apply from-blue-200 to-white bg-gradient-to-b;
-    @apply min-h-screen bg-[100%] bg-no-repeat;
   }
 }
 

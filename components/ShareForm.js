@@ -142,7 +142,7 @@ const ShareForm = ({ categories = [] }) => {
         strategy="afterInteractive"
       />
       <motion.div
-        className="flex font-serif flex-col items-center gap-4 px-8 pb-[25vh]"
+        className="pt-8 flex font-serif flex-col items-center gap-4 px-8 pb-[25vh]"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
@@ -164,7 +164,7 @@ const ShareForm = ({ categories = [] }) => {
               >
                 <TextareaAutosize
                   ref={textareaRef}
-                  minRows={8}
+                  minRows={6}
                   value={note}
                   inputMode="text"
                   spellCheck="false"

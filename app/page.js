@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import categories from "@/components/categories";
-import { registerMasonry } from 'masonry-pf';
+import { registerMasonry } from "masonry-pf";
 import { supabase } from "@/app/lib/supabaseClient";
-
 
 const formatName = (name) => {
   const trimmedName = (name ?? "").trim().replace(/^[\u2013\u2014-]*/, "");
@@ -44,9 +43,10 @@ export default function Home() {
       <Link href="/share" className="btn">
         Share your story
       </Link>
-      <div>
-        <ul className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 grid-rows-[masonry] gap-4 items-start"
-        ref={registerMasonry}
+      <div className="pt-8">
+        <ul
+          className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 grid-rows-[masonry] gap-4 items-start"
+          ref={registerMasonry}
         >
           {notes.map((note) => {
             const noteCategories = categories.filter((category) =>
@@ -61,22 +61,24 @@ export default function Home() {
                 className="bg-white flex flex-col px-6 py-4 pb-6 rounded-xl gap-6"
               >
                 <p>{note.note}</p>
-                <p className="text-black/50">
-                  <span>— </span>
-                  {formatName(note.name)}
-                </p>
-                {noteCategories.length > 0 && (
-                  <p className="text-gray-500 text-sm font-medium">
-                    {noteCategories
-                      .map((category, index) => (
-                        <span key={category.id}>
-                          <a href="#">{category.name}</a>
-                          {index < noteCategories.length - 1 ? ", " : ""}
-                        </span>
-                      ))
-                      .reduce((prev, curr) => [prev, curr])}
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-gray-500">
+                    <span>— </span>
+                    {formatName(note.name)}
                   </p>
-                )}
+                  {noteCategories.length > 0 && (
+                    <p className="text-gray-500 text-sm font-medium">
+                      {noteCategories
+                        .map((category, index) => (
+                          <span key={category.id}>
+                            <a href="#">{category.name}</a>
+                            {index < noteCategories.length - 1 ? ", " : ""}
+                          </span>
+                        ))
+                        .reduce((prev, curr) => [prev, curr])}
+                    </p>
+                  )}
+                </div>
               </motion.li>
             );
           })}

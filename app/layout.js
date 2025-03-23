@@ -14,9 +14,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="fixed inset-0 bg-gradient-to-br from-pink-50 to-white-100 -z-10 h-screen" />
         <Header />
         <main className="pt-4">{children}</main>
+        <div className="bg-no-repeat from-blue-300 to-white bg-gradient-to-b inset-0 fixed -z-10 h-screen pointer-events-none select-none" />
       </body>
     </html>
   );

@@ -210,8 +210,10 @@ const ShareForm = ({ categories = [] }) => {
                   pressed || isSubmitting ? "bg-transparent" : "bg-white"
                 } transition-[background] duration-1000 ease-out`}
               >
-                <p>
-                  Type of incident{" "}
+                <p className="flex w-full gap-2">
+                  <span>
+                    Where did it happen?
+                  </span>
                   <span className="opacity-40">(optional)</span>
                 </p>
                 {categories ? (

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import categories from "@/components/categories";
-import { registerMasonry } from "masonry-pf";
 import { supabase } from "@/app/lib/supabaseClient";
+import { Masonry } from "react-plock";
 
 const formatName = (name) => {
   const trimmedName = (name ?? "").trim().replace(/^[\u2013\u2014-]*/, "");
@@ -45,12 +45,18 @@ export default function Home() {
       </Link>
       <div className="pt-8">
         <ul
-          className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 grid-rows-[masonry] gap-4 items-start"
-          ref={registerMasonry}
+          className=""
+          // ref={registerMasonry}
         >
-          {notes.map((note) => (
-            <Note note={note} key={note.id} />
-          ))}
+          <Masonry
+            items={notes}
+            config={{
+              columns: [1, 2, 4],
+              gap: [16, 16, 16],
+              media: [768, 1280, 1920],
+            }}
+            render={(item) => <Note note={item} key={item.id} />}
+          />
         </ul>
       </div>
     </motion.div>
@@ -61,11 +67,6 @@ const limits = [200, 400, 500];
 
 const Note = ({ note }) => {
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    window.dispatchEvent(new Event("resize"));
-  }, [expanded]);
-
   const noteRef = useRef();
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const Note = ({ note }) => {
       key={note.id}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={`flex flex-col duration-[2s] transition-[background] delay-1000 px-6 py-4 pb-6 rounded-xl gap-6 ${
+      className={`flex flex-col transition-all px-6 py-4 pb-6 rounded-xl gap-6 duration-[2s] delay-1000 ${
         expanded ? "bg-white/25" : "bg-white"
       }`}
     >
@@ -101,7 +102,7 @@ const Note = ({ note }) => {
         {displayText}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-blue-500 text-sm p-6 -m-6 -mx-5 cursor-pointer font-medium self-start"
+          className="text-blue-500 text-sm p-6 -m-6 -mx-5 cursor-pointer font-medium self-start hover:underline focus-visible:underline outline-0"
         >
           {expanded ? "read less" : "read more"}
         </button>

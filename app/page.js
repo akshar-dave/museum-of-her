@@ -68,8 +68,13 @@ const limits = [200, 400, 500];
 const Note = ({ note }) => {
   const [expanded, setExpanded] = useState(false);
   const noteRef = useRef();
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     if (expanded) return;
     noteRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [expanded]);

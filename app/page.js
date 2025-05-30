@@ -44,10 +44,7 @@ export default function Home() {
         Share your story
       </Link>
       <div className="pt-8">
-        <ul
-          className=""
-          // ref={registerMasonry}
-        >
+        <ul className="">
           <Masonry
             items={notes}
             config={{
@@ -85,9 +82,10 @@ const Note = ({ note }) => {
 
   const truncated = note.note.length > limit;
 
-  const displayText = expanded
-    ? note.note
-    : note.note.slice(0, limit).split(" ").slice(0, -1).join(" ") + "…";
+  const displayText =
+    expanded || !truncated
+      ? note.note
+      : note.note.slice(0, limit).split(" ").slice(0, -1).join(" ") + "…";
 
   const noteCategories = categories.filter((category) =>
     note.categories?.includes(category.id)
@@ -105,16 +103,20 @@ const Note = ({ note }) => {
     >
       <p>
         {displayText}
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-blue-500 text-sm p-6 -m-6 -mx-5 cursor-pointer font-medium self-start hover:underline focus-visible:underline outline-0"
-        >
-          {expanded ? "read less" : "read more"}
-        </button>
+        {truncated ? (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-blue-500 text-sm p-3 -m-3 cursor-pointer font-medium self-start hover:underline focus-visible:underline outline-0 group interactive"
+          >
+            <span className="p-2 py-1.5 rounded-full group-focus-visible:bg-blue-100">
+              {expanded ? "read less" : "read more"}
+            </span>
+          </button>
+        ) : null}
       </p>
 
       <div className="flex flex-col gap-0.5">
-        <p className="text-gray-500">
+        <p className="text-gray-500 text-sm">
           <span>— </span>
           {formatName(note.name)}
         </p>

@@ -84,6 +84,20 @@ const ShareForm = ({ categories = [] }) => {
     }
   }, [note, isSubmitted, name, selectedCategories]);
 
+  const randomInitials = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const vowels = "AEIOU";
+    const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+
+    const getRandom = (str) => str[Math.floor(Math.random() * str.length)];
+
+    const first = getRandom(letters);
+    const second =
+      Math.random() > 0.3 ? getRandom(consonants) : getRandom(vowels);
+
+    return first + second;
+  };
+
   const handleSubmit = async () => {
     if (!note.trim()) {
       textareaRef.current?.focus();
@@ -102,7 +116,7 @@ const ShareForm = ({ categories = [] }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name,
+          name: name.trim().length ? name : randomInitials(),
           note: note.trim(),
           turnstileToken: token,
           categories: selectedCategories,
@@ -188,7 +202,7 @@ const ShareForm = ({ categories = [] }) => {
                     maxLength={14}
                     type="text"
                     name="name"
-                    placeholder="Your name, or a pseudonym"
+                    placeholder="Your name, or a pseudonym (optional)"
                     disabled={isSubmitting}
                   />
                   <span className="absolute left-0 peer-[focus-within]:opacity-0 transition-all duration-500">
@@ -211,9 +225,7 @@ const ShareForm = ({ categories = [] }) => {
                 } transition-[background] duration-1000 ease-out`}
               >
                 <p className="flex w-full gap-2">
-                  <span>
-                    Where did it happen?
-                  </span>
+                  <span>Where did it happen?</span>
                   <span className="opacity-40">(optional)</span>
                 </p>
                 {categories ? (

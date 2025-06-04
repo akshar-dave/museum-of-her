@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Notes from "@/components/Notes";
 
-export default function Home() {
+export const metadata = {
+  title: `At work | The Museum of Her`,
+  description: `Notes in the At work category`,
+};
+
+export default function AtWork() {
   return (
     <div className="flex min-h-screen font-serif flex-col items-center gap-4 px-8 pb-[50vh]">
       <Link href="/share" className="btn">
@@ -9,7 +14,7 @@ export default function Home() {
       </Link>
       <div className="pt-8">
         <ul>
-          <Notes />
+          <Notes categoryId={7} />
         </ul>
       </div>
     </div>

@@ -11,7 +11,7 @@ export default function AtWork() {
     <div className="flex min-h-screen font-serif flex-col items-center gap-4 px-8 pb-[50vh]">
       <div className="pt-8">
         <ul>
-          <Notes categoryId={7} />
+          <Notes categoryId={1} />
         </ul>
       </div>
       <ShareGroup />

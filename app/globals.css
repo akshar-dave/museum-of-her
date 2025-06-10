@@ -18,7 +18,7 @@
 }
 
 .btn {
-  @apply select-none flex items-center gap-1 bg-white text-black shadow-lg shadow-blue-200 active:shadow-md transition-all cursor-pointer disabled:cursor-auto rounded-full px-4 py-2 max-w-fit text-xs tracking-widest active:scale-90 duration-500;
+  @apply select-none flex items-center gap-1 bg-white text-black shadow-lg shadow-blue-200 active:shadow-md transition-all cursor-pointer disabled:cursor-auto rounded-full lg:px-4 px-5 lg:py-2 py-3 max-w-fit text-xs tracking-widest active:scale-90 duration-500;
 }
 
 .interactive {

@@ -2,11 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
 export default function Welcome() {
   const dialogRef = useRef(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -22,6 +24,10 @@ export default function Welcome() {
     }
     dialogRef.current?.close();
   };
+
+  if (pathname === "/resources") {
+    return null;
+  }
 
   return (
     <dialog

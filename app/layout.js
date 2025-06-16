@@ -9,11 +9,13 @@ export const metadata = {
 };
 
 import Header from "../components/Header";
+import Welcome from "../components/Welcome";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Welcome />
         <Header />
         <main className="pt-4">{children}</main>
         <div className="bg-no-repeat from-blue-200 to-white bg-gradient-to-b inset-0 fixed -z-10 h-screen pointer-events-none select-none" />

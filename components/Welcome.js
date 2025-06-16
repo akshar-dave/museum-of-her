@@ -32,7 +32,7 @@ export default function Welcome() {
   return (
     <dialog
       ref={dialogRef}
-      className="fixed inset-0 m-0 p-0 w-full h-full bg-white flex items-center justify-center"
+      className="fixed inset-0 m-0 p-0 w-full h-full bg-white/10 backdrop-blur-lg flex items-center justify-center"
     >
       <div className="flex flex-col gap-6 text-center px-6 max-w-md">
         <p className="text-lg font-semibold">Trigger Warning ⚠️</p>

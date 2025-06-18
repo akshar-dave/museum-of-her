@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Masonry } from "react-plock";
 import categories from "./categories";
 import { supabase } from "@/app/lib/supabaseClient";
+import Welcome from "./Welcome";
 
 export default function Notes({ categoryId }) {
   const [notes, setNotes] = useState([]);
@@ -29,15 +30,18 @@ export default function Notes({ categoryId }) {
   }, [categoryId]);
 
   return (
-    <Masonry
-      items={notes}
-      config={{
-        columns: [1, 2, 4],
-        gap: [16, 16, 16],
-        media: [768, 1280, 1920],
-      }}
-      render={(item) => <Note note={item} key={item.id} />}
-    />
+    <>
+      <Welcome />
+      <Masonry
+        items={notes}
+        config={{
+          columns: [1, 2, 4],
+          gap: [16, 16, 16],
+          media: [768, 1280, 1920],
+        }}
+        render={(item) => <Note note={item} key={item.id} />}
+      />
+    </>
   );
 }
 

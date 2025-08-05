@@ -60,7 +60,7 @@ export default function Welcome() {
           </p>
           {isNightTime && (
             <p>
-              Some stories weigh heavier at night. Make sure you're okay. Maybe
+              Some stories weigh heavier at night. Make sure you&apos;re okay. Maybe
               come back to this in the morning.
             </p>
           )}

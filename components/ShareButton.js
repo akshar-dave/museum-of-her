@@ -31,7 +31,7 @@ Check it out here: https://museum-of-her.pages.dev`,
     navigator.share?.(shareData).catch((err) => {
       console.error("Error sharing", err);
     });
-  }, []);
+  }, [shareData]);
 
   if (!canShare) return null;
 

@@ -5,9 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Masonry } from "react-plock";
 import categories from "./categories";
+import { supabase } from "@/app/lib/supabaseClient";
 import { useAuth } from "@/app/lib/useAuth";
 import { getTurnstileToken } from "@/app/lib/turnstile";
-import Welcome from "./Welcome";
 
 // Flower SVG paths (now in public folder)
 const flowers = [
@@ -45,27 +45,23 @@ export default function Notes({ categoryId }) {
   }, [categoryId]);
 
   return (
-    <>
-      <Welcome />
-      <Masonry
-        items={notes}
-        config={{
-          columns: [1, 2, 4],
-          gap: [16, 16, 16],
-          media: [768, 1280, 1920],
-        }}
-        render={(item) => (
-          <Note
-            note={item}
-            key={item.id}
-            user={user}
-            onSignIn={signInAnonymously}
-            isAuthenticated={isAuthenticated}
-          />
-        )}
-      />
-    </>
-  );
+    <Masonry
+      items={notes}
+      config={{
+        columns: [1, 2, 4],
+        gap: [16, 16, 16],
+        media: [768, 1280, 1920],
+      }}
+      render={(item) => (
+        <Note
+          note={item}
+          key={item.id}
+          user={user}
+          onSignIn={signInAnonymously}
+          isAuthenticated={isAuthenticated}
+        />
+      )}
+    />
   );
 }
 

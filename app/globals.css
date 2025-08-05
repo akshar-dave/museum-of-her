@@ -22,5 +22,9 @@
 }
 
 .interactive {
-  @apply select-none transition-all cursor-pointer disabled:cursor-auto active:scale-95;
+  @apply select-none transition-all duration-75 cursor-pointer disabled:cursor-auto active:scale-95;
+}
+
+.decoration {
+  @apply select-none pointer-events-none;
 }

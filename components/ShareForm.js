@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLongPress } from "use-long-press";
 import TextareaAutosize from "react-textarea-autosize";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
+import { loadTurnstileScript } from "@/app/lib/turnstile";
 
 const ShareForm = ({ categories = [] }) => {
   const [name, setName] = useState("");
@@ -20,16 +20,21 @@ const ShareForm = ({ categories = [] }) => {
   const turnstileRef = useRef(null);
 
   useEffect(() => {
-    const initializeTurnstile = () => {
-      if (window.turnstile) {
-        window.turnstile.render(".cf-turnstile", {
-          sitekey: "0x4AAAAAAA89GzESq3w9jvRi",
-        });
+    const initializeTurnstile = async () => {
+      try {
+        await loadTurnstileScript();
+        if (window.turnstile) {
+          window.turnstile.render(".cf-turnstile", {
+            sitekey: "0x4AAAAAAA89GzESq3w9jvRi",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to initialize Turnstile:", error);
       }
     };
 
     const cleanupTurnstile = () => {
-      if (window.turnstile) {
+      if (window.turnstile && turnstileRef.current) {
         window.turnstile.reset(turnstileRef.current);
       }
     };
@@ -151,10 +156,6 @@ const ShareForm = ({ categories = [] }) => {
 
   return (
     <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-      />
       <motion.div
         className="pt-8 flex font-serif flex-col items-center gap-4 px-8 pb-[25vh]"
         initial={{ opacity: 0, y: -10 }}

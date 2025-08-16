@@ -72,6 +72,14 @@ const formatName = (name) => {
   return trimmedName === "" ? "Anonymous" : trimmedName;
 };
 
+const formatHugCount = (count) => {
+  if (count < 10) return "10+";
+  if (count < 100) return `${Math.floor(count / 10) * 10}+`;
+  if (count < 1000) return `${Math.floor(count / 10) * 10}+`;
+  if (count < 1000000) return `${Math.floor(count / 1000)}k+`;
+  return `${Math.floor(count / 1000000)}m+`;
+};
+
 const Note = ({ note, user, onSignIn, isAuthenticated }) => {
   const [expanded, setExpanded] = useState(false);
   const [hugged, setHugged] = useState(false);
@@ -222,6 +230,8 @@ const Note = ({ note, user, onSignIn, isAuthenticated }) => {
             </p>
           )}
         </div>
+        <div className="flex items-center gap-2">
+        {/* {hugs > 0 && <span className="font-sans text-sm font-medium">{formatHugCount(hugs)}</span>} */}
         {expanded ? (
           <motion.button
             initial={{ scale: 0.8, opacity: 0 }}
@@ -234,10 +244,9 @@ const Note = ({ note, user, onSignIn, isAuthenticated }) => {
             }`}
             onClick={hug}
           >
-            {/* {hugs > 0 && <span className="text-xs font-medium">{hugs}</span>} */}
             {hugged && selectedFlower ? (
               <motion.img
-                initial={{ scale: 0, opacity: 0, rotate: 30 }}
+                initial={{ scale: 0.8, opacity: 0, rotate: 30 }}
                 animate={{ scale: 1, opacity: 1, rotate: 0 }}
                 transition={{ type: "spring", bounce: 0.2, duration: 1 }}
                 src={selectedFlower}
@@ -249,6 +258,7 @@ const Note = ({ note, user, onSignIn, isAuthenticated }) => {
             )}
           </motion.button>
         ) : null}
+        </div>
       </div>
     </motion.li>
   );

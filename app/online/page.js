@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function Online() {
   return (
-    <div className="flex min-h-screen font-serif flex-col items-center gap-4 px-8 pb-[50vh]">
+    <div className="flex min-h-screen font-serif flex-col items-center gap-4 px-4 pb-[50vh]">
       <div className="pt-8">
         <ul>
           <Notes categoryId={5} />

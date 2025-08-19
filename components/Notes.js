@@ -199,13 +199,13 @@ const Note = ({ note, user, onSignIn, isAuthenticated }) => {
       }`}
     >
       <p>
-        {displayText}
+        {displayText}&nbsp;
         {truncated ? (
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-blue-500 text-sm p-3 -m-3 cursor-pointer font-medium self-start hover:underline focus-visible:underline outline-0 group interactive"
           >
-            <span className="p-2 py-1.5 rounded-full group-focus-visible:bg-blue-100">
+            <span className="p-2 -m-2 py-1.5 rounded-full group-focus-visible:bg-blue-100">
               {expanded ? "read less" : "read more"}
             </span>
           </button>
@@ -232,32 +232,19 @@ const Note = ({ note, user, onSignIn, isAuthenticated }) => {
         </div>
         <div className="flex items-center gap-2">
         {/* {hugs > 0 && <span className="font-sans text-sm font-medium">{formatHugCount(hugs)}</span>} */}
-        {expanded ? (
-          <motion.button
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", bounce: 0.1, duration: 1 }}
-            viewport={{ once: true }}
+        <motion.button
             type="button"
-            className={`flex h-12 w-12 items-center justify-center cursor-pointer aspect-square rounded-full shrink-0 select-none text-xl border focus-visible:outline border-blue-900/20 focus:outline-none interactive ${
-              hugged ? "" : "hover:bg-white/50"
+            className={`flex h-12 w-12 group items-center justify-center cursor-pointer aspect-square rounded-full shrink-0 select-none text-xl border focus-visible:outline border-blue-900/20 interactive ${
+              hugged ? "bg-blue-100 border-transparent" : "hover:bg-white/50"
             }`}
             onClick={hug}
           >
-            {hugged && selectedFlower ? (
-              <motion.img
-                initial={{ scale: 0.8, opacity: 0, rotate: 30 }}
-                animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                transition={{ type: "spring", bounce: 0.2, duration: 1 }}
-                src={selectedFlower}
-                alt="flower"
-                className="w-5 h-5 decoration"
-              />
-            ) : (
-              <span>🫂</span>
-            )}
+            <span
+              className={`${hugged ? "scale-100" : "scale-95"} transition-all duration-1000`}
+            >
+              🫂
+            </span>
           </motion.button>
-        ) : null}
         </div>
       </div>
     </motion.li>

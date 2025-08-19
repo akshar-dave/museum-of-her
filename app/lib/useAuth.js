@@ -12,7 +12,6 @@ export function useAuth() {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser(session.user);
-          console.log('User session found:', session.user.id);
         }
       } catch (error) {
         console.error('Error getting session:', error);
@@ -26,7 +25,6 @@ export function useAuth() {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id);
         setUser(session?.user ?? null);
         
         // Clear hugged notes from localStorage when user signs out
@@ -57,7 +55,6 @@ export function useAuth() {
         throw error;
       }
 
-      console.log('Signed in anonymously:', data.user.id);
       setUser(data.user);
       return data;
     } catch (error) {
@@ -75,7 +72,6 @@ export function useAuth() {
         console.error('Error signing out:', error);
         throw error;
       }
-      console.log('Signed out successfully');
       setUser(null);
     } catch (error) {
       console.error('Error during sign out:', error);

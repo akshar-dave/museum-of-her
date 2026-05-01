@@ -18,15 +18,25 @@ const ShareForm = ({ categories = [] }) => {
   const textareaRef = useRef(null);
   const router = useRouter();
   const turnstileRef = useRef(null);
+  const turnstileWidgetIdRef = useRef(null);
 
   useEffect(() => {
     const initializeTurnstile = async () => {
       try {
         await loadTurnstileScript();
-        if (window.turnstile) {
-          window.turnstile.render(".cf-turnstile", {
-            sitekey: "0x4AAAAAAA89GzESq3w9jvRi",
-          });
+        if (
+          window.turnstile &&
+          turnstileRef.current &&
+          !turnstileWidgetIdRef.current
+        ) {
+          turnstileWidgetIdRef.current = window.turnstile.render(
+            turnstileRef.current,
+            {
+              sitekey: "0x4AAAAAAA89GzESq3w9jvRi",
+              size: "flexible",
+              appearance: "always",
+            },
+          );
         }
       } catch (error) {
         console.error("Failed to initialize Turnstile:", error);
@@ -34,8 +44,9 @@ const ShareForm = ({ categories = [] }) => {
     };
 
     const cleanupTurnstile = () => {
-      if (window.turnstile && turnstileRef.current) {
-        window.turnstile.reset(turnstileRef.current);
+      if (window.turnstile && turnstileWidgetIdRef.current) {
+        window.turnstile.remove(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
       }
     };
 
@@ -79,7 +90,7 @@ const ShareForm = ({ categories = [] }) => {
               name: name,
               note: note.trim(),
               categories: selectedCategories,
-            })
+            }),
           );
         }, 200);
       } else {
@@ -151,7 +162,7 @@ const ShareForm = ({ categories = [] }) => {
       onStart: () => setPressed(true),
       onFinish: () => setPressed(false),
       onCancel: () => setPressed(false),
-    }
+    },
   );
 
   return (
@@ -241,7 +252,7 @@ const ShareForm = ({ categories = [] }) => {
                           value={category.id}
                           className="sr-only peer"
                           defaultChecked={selectedCategories.includes(
-                            category.id
+                            category.id,
                           )}
                           onChange={(e) => {
                             if (e.target.checked) {
@@ -252,8 +263,8 @@ const ShareForm = ({ categories = [] }) => {
                             } else {
                               setSelectedCategories(
                                 selectedCategories.filter(
-                                  (id) => id !== category.id
-                                )
+                                  (id) => id !== category.id,
+                                ),
                               );
                             }
                           }}
@@ -280,6 +291,13 @@ const ShareForm = ({ categories = [] }) => {
                 ) : null}
               </div>
 
+              <Divider />
+              <div
+                ref={turnstileRef}
+                data-size="flexible"
+                data-theme="light"
+                className="w-full"
+              ></div>
               <Divider />
 
               <div className="flex items-center justify-end w-full gap-4">
@@ -319,13 +337,6 @@ const ShareForm = ({ categories = [] }) => {
             </motion.p>
           )}
         </AnimatePresence>
-        <div
-          className="cf-turnstile"
-          data-sitekey="0x4AAAAAAA89GzESq3w9jvRi"
-          data-size="flexible"
-          data-appearance="interaction-only"
-          ref={turnstileRef}
-        ></div>
       </motion.div>
     </>
   );
